@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.repository.CrudRepository;
 
 @Repository
-public interface MoviesRepository extends CrudRepository<Movie, Integer>{
+public interface MoviesRepository extends CrudRepository<Movie, Long>{
 
 
 }

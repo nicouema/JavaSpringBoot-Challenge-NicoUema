@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import com.alkemy.disneyAPI.classes.Character;
 
 @Repository
-public interface CharacterRepository extends CrudRepository<Character, Integer> {
+public interface CharacterRepository extends CrudRepository<Character, Long> {
+
 
 }

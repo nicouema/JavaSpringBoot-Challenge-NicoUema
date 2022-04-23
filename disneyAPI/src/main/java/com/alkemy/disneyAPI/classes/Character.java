@@ -1,26 +1,42 @@
 package com.alkemy.disneyAPI.classes;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "Character")
 public class Character {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(unique = true, nullable = false)
-    private Integer id;
+    private Long character_id;
     private String image;
     private String name;
     private String lastname;
     private int age;
     private int weight;
     private String history;
+    @ManyToMany(mappedBy = "characterIn")
+    private List<Movie> moviesIn;
 
+//  Constructors
+    protected Character() {
+    }
+
+    public Character(String image, String name, String lastname, int age, int weight, String history) {
+        this.image = image;
+        this.name = name;
+        this.lastname = lastname;
+        this.age = age;
+        this.weight = weight;
+        this.history = history;
+    }
+//  toString Method
     @Override
     public String toString() {
         return "Character{" +
-                "id=" + id +
+                "id=" + character_id +
                 ", image=" + image +
                 ", name='" + name + '\'' +
                 ", lastname='" + lastname + '\'' +
@@ -30,6 +46,7 @@ public class Character {
                 '}';
     }
 
+//  Getters and Setter
 
     public String getImage() {
         return image;

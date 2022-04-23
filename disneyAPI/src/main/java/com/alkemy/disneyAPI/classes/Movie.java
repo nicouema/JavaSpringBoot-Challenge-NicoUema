@@ -1,23 +1,63 @@
 package com.alkemy.disneyAPI.classes;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name= "Movie")
 public class Movie {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(unique = true, nullable = false)
-    private Integer id;
-
+    private Long movie_id;
     private String image;
     private String title;
     private Date creationDate;
     private int qualification;
-    private ArrayList<Character> characterIn;
+
+    @ManyToMany(fetch =FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "movie_character",
+            joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "character_id",
+            referencedColumnName = "character_id"))
+    private List<Character> characterIn;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "gender_id")
+    private Gender gender;
+
+//  Constructor
+
+    protected Movie() {
+    }
+
+    public Movie(String image, String title, Date creationDate, int qualification, List<Character> characterIn, Gender gender) {
+        this.image = image;
+        this.title = title;
+        this.creationDate = creationDate;
+        this.qualification = qualification;
+        this.characterIn = characterIn;
+        this.gender = gender;
+    }
+
+    //  Getters and Setters
+    public List<Character> getCharacterIn() {
+        return characterIn;
+    }
+
+    public void setCharacterIn(List<Character> characterIn) {
+        this.characterIn = characterIn;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
 
     public String getImage() {
         return image;
@@ -51,17 +91,10 @@ public class Movie {
         this.qualification = qualification;
     }
 
-    public ArrayList<Character> getCharacterIn() {
-        return characterIn;
-    }
-
-    public void setCharacterIn(ArrayList<Character> characterIn) {
-        this.characterIn = characterIn;
-    }
-
+//  toString
     @Override
     public String toString() {
-        return "Movie{" + id +
+        return "Movie{" + movie_id +
                 "image=" + image +
                 ", title='" + title + '\'' +
                 ", creationDate=" + creationDate +

@@ -19,12 +19,6 @@ public class CharacterController {
     @GetMapping()
     public List<Character> getAllCharacter() {
         return characterService.getAllCharacters();
-//        String str = "";
-//        for (Character character:characterService.getAllCharacters()) {
-//            str += "\n" + character.toString();
-//        }
-//        System.out.print(str + "hola");
-//        return str;
-//        return "Hola Mundo";
     }
+
 }

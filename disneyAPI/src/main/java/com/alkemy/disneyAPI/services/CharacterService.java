@@ -16,4 +16,5 @@ public class CharacterService {
     public List<Character> getAllCharacters() {
         return (List<Character>) characterRepository.findAll();
     }
+
 }

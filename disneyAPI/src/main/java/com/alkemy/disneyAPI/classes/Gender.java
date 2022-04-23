@@ -1,6 +1,7 @@
 package com.alkemy.disneyAPI.classes;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Table(name = "Gender")
@@ -8,13 +9,22 @@ import javax.persistence.*;
 public class Gender {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(unique = true,nullable = false)
-    private Integer id;
-
+    private Long gender_id;
     private String name;
     private String image;
+    @OneToMany(mappedBy = "gender")
+    private List<Movie> moviesOfGender;
 
+    protected Gender() {
+    }
+
+    //    Contructor
+    public Gender(String name, String image) {
+        this.name = name;
+        this.image = image;
+    }
 
     public String getName() {
         return name;

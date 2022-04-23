@@ -11,13 +11,13 @@ import java.util.ArrayList;
 public class GenderService {
 
     @Autowired
-    private GenderRepository genderRerpository;
+    private GenderRepository genderRepository;
 
     public ArrayList<Gender> getAllGender() {
-        return (ArrayList<Gender>) genderRerpository.findAll();
+        return (ArrayList<Gender>) genderRepository.findAll();
     }
 
     public Gender saveGender(Gender gender) {
-        return genderRerpository.save(gender);
+        return genderRepository.save(gender);
     }
 }
