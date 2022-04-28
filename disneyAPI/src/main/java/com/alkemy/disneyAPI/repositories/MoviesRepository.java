@@ -1,11 +1,18 @@
 package com.alkemy.disneyAPI.repositories;
 
 import com.alkemy.disneyAPI.classes.Movie;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
-public interface MoviesRepository extends CrudRepository<Movie, Long>{
+public interface MoviesRepository extends CrudRepository<Movie, Integer>{
 
+    @Query(value = "SELECT title, image, creation_date from movies_table ORDER BY creation_date ASC", nativeQuery = true)
+    List<Movie> getMoviesSortedAsc();
 
+    @Query(value = "SELECT title, image, creation_date FROM movies_table ORDER BY creation_date DESC", nativeQuery = true)
+    List<Movie> getMoviesSortedDesc();
 }

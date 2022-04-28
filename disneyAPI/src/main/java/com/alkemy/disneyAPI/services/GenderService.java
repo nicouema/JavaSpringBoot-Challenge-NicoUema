@@ -1,7 +1,7 @@
 package com.alkemy.disneyAPI.services;
 
 import com.alkemy.disneyAPI.classes.Gender;
-import com.alkemy.disneyAPI.repositories.GenderRepository;
+import com.alkemy.disneyAPI.repositories.GendersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,13 +11,50 @@ import java.util.ArrayList;
 public class GenderService {
 
     @Autowired
-    private GenderRepository genderRepository;
+    private GendersRepository genderRepository;
 
+    /**
+     *
+     * @param genderId: Gender's id searched.
+     * @return true if it's exist, otherwise false.
+     */
+    private boolean genderExist(Integer genderId){
+        return genderRepository.existsById(genderId);
+    }
+
+//  Get Methods
     public ArrayList<Gender> getAllGender() {
         return (ArrayList<Gender>) genderRepository.findAll();
     }
-
+    public Gender getGenderByID(Integer genderId) {
+        if (genderExist(genderId)) {
+            return genderRepository.findById(genderId).get();
+        }
+        else {
+            return null;
+        }
+    }
     public Gender saveGender(Gender gender) {
         return genderRepository.save(gender);
     }
+
+//  Delete Methods
+    public String delGender(Integer id){
+        if (genderExist(id)) {
+            genderRepository.deleteById(id);
+            return "Gender with id: " + id + " removed";
+        }
+        else {
+            return "Gender not found!";
+        }
+    }
+    public void delAllGender(){
+        genderRepository.deleteAll();
+    }
+
+//  Post Methods
+    public void saveGender(String name) {
+        saveGender(new Gender(name));
+    }
+
 }

@@ -1,27 +1,41 @@
 package com.alkemy.disneyAPI.classes;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Character")
+@Table(name = "CharactersTable")
 public class Character {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(unique = true, nullable = false)
-    private Long character_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, unique = true, name = "character_id")
+    private Integer character_id;
+
     private String image;
     private String name;
     private String lastname;
     private int age;
     private int weight;
     private String history;
-    @ManyToMany(mappedBy = "characterIn")
-    private List<Movie> moviesIn;
+
+    @JsonIgnoreProperties("characterIn")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "characterIn", cascade = {CascadeType.MERGE,
+                                                     CascadeType.REFRESH, CascadeType.DETACH})
+    private List<Movie> moviesIn = new ArrayList<>();
 
 //  Constructors
     protected Character() {
+    }
+
+    public Character(String name, String lastname, int age, int weight) {
+        this.name = name;
+        this.lastname = lastname;
+        this.age = age;
+        this.weight = weight;
     }
 
     public Character(String image, String name, String lastname, int age, int weight, String history) {
@@ -32,6 +46,7 @@ public class Character {
         this.weight = weight;
         this.history = history;
     }
+
 //  toString Method
     @Override
     public String toString() {
@@ -94,5 +109,25 @@ public class Character {
 
     public void setHistory(String history) {
         this.history = history;
+    }
+
+    public Integer getCharacter_id() {
+        return character_id;
+    }
+
+    public void setCharacter_id(Integer character_id) {
+        this.character_id = character_id;
+    }
+
+    public List<Movie> getMoviesIn() {
+        return moviesIn;
+    }
+
+    public void setMoviesIn(List<Movie> moviesIn) {
+        this.moviesIn = moviesIn;
+    }
+
+    public void clearMoviesIn() {
+        this.moviesIn.clear();
     }
 }

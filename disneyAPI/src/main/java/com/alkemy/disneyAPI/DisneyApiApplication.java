@@ -1,9 +1,11 @@
 package com.alkemy.disneyAPI;
 
 import com.alkemy.disneyAPI.classes.Character;
-import com.alkemy.disneyAPI.repositories.CharacterRepository;
-import com.alkemy.disneyAPI.repositories.GenderRepository;
-import com.alkemy.disneyAPI.repositories.MoviesRepository;
+import com.alkemy.disneyAPI.classes.Gender;
+import com.alkemy.disneyAPI.classes.Movie;
+import com.alkemy.disneyAPI.services.CharacterService;
+import com.alkemy.disneyAPI.services.GenderService;
+import com.alkemy.disneyAPI.services.MovieService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,16 +21,43 @@ public class DisneyApiApplication {
 	}
 
 	@Bean
-	public CommandLineRunner createCommand(CharacterRepository characterRepository, MoviesRepository moviesRepository,
-										   GenderRepository genderRepository) {
+	public CommandLineRunner createCommand(CharacterService characterService, MovieService movieService,
+										   GenderService genderService) {
 		return (args) -> {
-			characterRepository.save(new Character("Image", "Buzz", "LightYear", 12, 1,
-					"None"));
-//			characterRepository.save(new Character("Image", "Woody", "",
-//					12, 1, "None"));
-//			characterRepository.save(new Character("Image", "Betty", "",
-//					11, 1, "None"));
+//			Character character01 = new Character("Image", "Buzz", "LightYear", 12, 1,
+//					"None");
+//			characterRepository.save(character01);
+//			Character character02 = new Character("Image", "Woody", "",
+//					12, 1, "None");
+//			characterRepository.save(character02);
+//			Character character03 = new Character("Image", "Betty", "",
+//					11, 1, "None");
+//			characterRepository.save(character03);
+			Character character04 = new Character("Image", "Jack", "Sparrow",
+					35, 70, "None");
+			Character character05 = new Character("Image", "Elizabeth", "Swan",
+					28, 58, "None");
+////			System.out.println(characterRepository.findAll().toString());
+//
+			Gender gender01 = new Gender("Fantasy", "ImageGender");
+
+			Movie movie01 = new Movie("Image01", "Piratas del Caribe"
+					, 8);
+			Movie movie02 = new Movie("Image02", "Piratas del Caribe 2"
+					, 7);
+			Movie movie03 = new Movie("Image04","Piratas del Caribe 3", 8);
+//			genderService.saveGender(gender01);
+//			characterService.saveCharacter(character04);
+//			characterService.saveCharacter(character05);
+//			movie01.setGender(gender01);
+//			movie01.addCharacterIn(character04);
+//			movie01.addCharacterIn(character05);
+//			movie02.addCharacterIn(character04);
+//			movie02.setGender(gender01);
+//			movieService.saveMovie(movie01);
+//			movieService.saveMovie(movie02);
+//			movieService.saveMovie(movie03);
+
 		};
 	}
-
 }

@@ -1,48 +1,80 @@
 package com.alkemy.disneyAPI.classes;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name= "Movie")
+@Table(name= "MoviesTable")
 public class Movie {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(unique = true, nullable = false)
-    private Long movie_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false, name = "movie_id")
+    private Integer movie_id;
+
     private String image;
     private String title;
-    private Date creationDate;
+    private LocalDateTime creation_date;
     private int qualification;
 
-    @ManyToMany(fetch =FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("moviesIn")
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE,
+            CascadeType.REFRESH})
     @JoinTable(name = "movie_character",
-            joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "character_id",
-            referencedColumnName = "character_id"))
-    private List<Character> characterIn;
+            joinColumns = @JoinColumn(name = "id_movie", referencedColumnName = "movie_id"),
+            foreignKey = @ForeignKey(name = "fk_id_movie"),
+            inverseJoinColumns = @JoinColumn(name = "id_character",
+                    referencedColumnName = "character_id"),
+            inverseForeignKey = @ForeignKey(name = "fk_id_movie"))
+    private List<Character> characterIn = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "gender_id")
-    private Gender gender;
+    private Gender gender_id;
+
+
 
 //  Constructor
 
-    protected Movie() {
+    public Movie() {
     }
 
-    public Movie(String image, String title, Date creationDate, int qualification, List<Character> characterIn, Gender gender) {
+    public Movie(String image, String tittle, int qualification) {
         this.image = image;
-        this.title = title;
-        this.creationDate = creationDate;
+        this.title = tittle;
+        this.creation_date = LocalDateTime.now();
         this.qualification = qualification;
-        this.characterIn = characterIn;
-        this.gender = gender;
+    }
+
+    public Movie(String tittle, int qualification) {
+        this.title = tittle;
+        this.qualification = qualification;
+        this.creation_date = LocalDateTime.now();
+    }
+
+    public void addCharacterIn(Character character) {
+        characterIn.add(character);
+    }
+
+    public void delCharacterIn(Character character) {
+        characterIn.remove(character);
     }
 
     //  Getters and Setters
+
+
+    public Integer getMovie_id() {
+        return movie_id;
+    }
+
+    public void setMovie_id(Integer movie_id) {
+        this.movie_id = movie_id;
+    }
+
     public List<Character> getCharacterIn() {
         return characterIn;
     }
@@ -51,12 +83,12 @@ public class Movie {
         this.characterIn = characterIn;
     }
 
-    public Gender getGender() {
-        return gender;
+    public Gender getGender_id() {
+        return gender_id;
     }
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
+    public void setGender_id(Gender gender_id) {
+        this.gender_id = gender_id;
     }
 
     public String getImage() {
@@ -75,12 +107,12 @@ public class Movie {
         this.title = title;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
+    public LocalDateTime getCreationDate() {
+        return creation_date;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creation_date = creationDate;
     }
 
     public int getQualification() {
@@ -91,15 +123,17 @@ public class Movie {
         this.qualification = qualification;
     }
 
+
 //  toString
     @Override
     public String toString() {
-        return "Movie{" + movie_id +
-                "image=" + image +
+        return "Movie{Id=" + movie_id +
+                ", image=" + image +
                 ", title='" + title + '\'' +
-                ", creationDate=" + creationDate +
+                ", creationDate=" + creation_date +
                 ", qualification=" + qualification +
                 ", characterIn=" + characterIn +
                 '}';
     }
+
 }
