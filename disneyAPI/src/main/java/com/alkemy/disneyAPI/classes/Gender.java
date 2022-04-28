@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 
-@Table(name = "GendersTable")
+@Table(name = "Genders")
 @Entity
 public class Gender {
 

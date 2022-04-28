@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface MoviesRepository extends CrudRepository<Movie, Integer>{
 
+//  TODO: Solve error invalid column name movie_id
     @Query(value = "SELECT title, image, creation_date from movies_table ORDER BY creation_date ASC", nativeQuery = true)
     List<Movie> getMoviesSortedAsc();
 
