@@ -22,7 +22,7 @@ public class GenderService {
         return genderRepository.existsById(genderId);
     }
 
-//  Get Methods
+
     public ArrayList<Gender> getAllGender() {
         return (ArrayList<Gender>) genderRepository.findAll();
     }
@@ -34,11 +34,11 @@ public class GenderService {
             return null;
         }
     }
+
     public Gender saveGender(Gender gender) {
         return genderRepository.save(gender);
     }
 
-//  Delete Methods
     public String delGender(Integer id){
         if (genderExist(id)) {
             genderRepository.deleteById(id);
@@ -50,11 +50,6 @@ public class GenderService {
     }
     public void delAllGender(){
         genderRepository.deleteAll();
-    }
-
-//  Post Methods
-    public void saveGender(String name) {
-        saveGender(new Gender(name));
     }
 
 }

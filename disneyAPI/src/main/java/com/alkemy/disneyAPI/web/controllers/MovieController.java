@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(method = {RequestMethod.POST, RequestMethod.DELETE,
-                                           RequestMethod.GET, RequestMethod.PATCH})
+@RequestMapping(path = "/movies")
 public class MovieController {
 
     @Autowired
@@ -23,19 +22,22 @@ public class MovieController {
     GenderService genderService;
 
 //  Get Methods
-    @GetMapping("/movies")
+    @GetMapping()
     public List<Movie> getAllMovies(){
         return movieService.getAllMovies();
     }
-    @GetMapping("/movies/{id}")
+    @GetMapping(value = "{id}")
     public Object getMovieById(@PathVariable Integer id){
-        return movieService.getMovieById(id);
+        if (movieService.getMovieById(id) != null) {
+            return movieService.getMovieById(id);
+        }
+        return "Movie not found!";
     }
-    @GetMapping(path = "/movies", params = "name")
+    @GetMapping(params = "name")
     public Object getMovieByName(@RequestParam("name") String name) {
         return movieService.getMovieByName(name);
     }
-    @GetMapping(path = "/movies",params = "idGender")
+    @GetMapping(params = "idGender")
     public List<Movie> getMoviesOfGender(@RequestParam("idGender") Integer idGender){
         Gender gender = (Gender) genderService.getGenderByID(idGender);
         if (gender!=null) {
@@ -43,39 +45,39 @@ public class MovieController {
         }
         return null;
     }
-    @GetMapping(path = "/movies", params = "order")
+    @GetMapping(params = "order")
     public List<Movie> getMoviesSorted(@RequestParam("order") String order) {
         return movieService.getMoviesSorted(order);
     }
 
 //  Post Methods
-    @PostMapping("/movies/save/{tittle}/{qualification}")
-    public void saveMovie(@PathVariable String tittle, @PathVariable int qualification) {
-        this.movieService.saveMovie(new Movie(tittle, qualification));
+    @PostMapping()
+    public Movie createMovie(@RequestBody Movie movie) {
+        return movieService.createMovie(movie);
     }
-    @PostMapping("/movies/{id}/{tittle}")
-    public void changeTittle(@PathVariable Integer id, @PathVariable String tittle){
-        Movie movie = (Movie) movieService.getMovieById(id);
-        movie.setTitle(tittle);
-        movieService.saveMovie(movie);
-    }
-    @PostMapping(path = "/POST/movies/{idMovie}/character/{idCharacter}")
+    @PostMapping(path = "/{idMovie}/character/{idCharacter}")
     public String addCharacterToMovie(@PathVariable Integer idCharacter, @PathVariable Integer idMovie) {
         return movieCharacterService.addCharacterToMovie(idCharacter, idMovie);
     }
 
 //  Delete Methods
-    @DeleteMapping("/movies/del={id}")
+    @DeleteMapping(value = "{id}")
     public String delMovie(@PathVariable Integer id) {
         return movieService.delMovie(id);
     }
-    @DeleteMapping("/movies/del=all")
+    @DeleteMapping(value = "/all")
     public void delAllMovies() {
         movieService.delAllMovies();
     }
-    @DeleteMapping("/DELETE/movies/{idMovie}/character/{idCharacter}")
+    @DeleteMapping(path = "/{idMovie}/character/{idCharacter}")
     public String removeCharacterFromMovie( @PathVariable Integer idCharacter, @PathVariable Integer idMovie) {
         return movieCharacterService.removeCharacterFromMovie(idCharacter, idMovie);
+    }
+
+//    PUT METHODS
+    @PutMapping(value = "{idMovie}")
+    public Object updateMovie(@ModelAttribute Movie movie, @PathVariable Integer idMovie) {
+        return movieService.updateMovie(movie, idMovie);
     }
 }
 

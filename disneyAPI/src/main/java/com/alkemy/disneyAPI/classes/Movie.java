@@ -18,7 +18,7 @@ public class Movie {
 
     private String image;
     private String title;
-    private LocalDateTime creation_date;
+    private LocalDateTime creation_date = LocalDateTime.now();
     private int qualification;
 
     @JsonIgnoreProperties("moviesIn")

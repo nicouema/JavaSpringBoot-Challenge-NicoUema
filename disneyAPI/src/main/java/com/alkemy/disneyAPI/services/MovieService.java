@@ -31,12 +31,12 @@ public class MovieService {
     public List<Movie> getAllMovies() {
         return  (List<Movie>) movieRepository.findAll();
     }
-    public Object getMovieById(Integer id) {
+    public Movie getMovieById(Integer id) {
         if (movieExist(id)){
-            return (Movie) movieRepository.findById(id).get();
+            return movieRepository.findById(id).get();
         }
         else {
-            return "Movie not Found";
+            return null;
         }
     }
     public Movie getMovieByName(String name) {
@@ -86,5 +86,22 @@ public class MovieService {
     else{
         return movieRepository.getMoviesSortedDesc();
     }
+    }
+
+    public Movie createMovie(Movie movie) {
+        return movieRepository.save(movie);
+    }
+
+//    PUT METHOD
+    public Object updateMovie(Movie movie, Integer idMovie) {
+        Movie movieToEdit = getMovieById(idMovie);
+        if (movieToEdit != null) {
+            movieToEdit.setTitle(movie.getTitle());
+            movieToEdit.setImage(movie.getImage());
+            movieToEdit.setQualification(movie.getQualification());
+            movieToEdit.setGender_id(movie.getGender_id());
+            return movieToEdit;
+        }
+        return "Movie not Found!";
     }
 }

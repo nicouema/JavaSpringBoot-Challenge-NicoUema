@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/characters", method = {RequestMethod.POST, RequestMethod.DELETE, RequestMethod.GET})
+@RequestMapping(value = "/characters")
 public class CharacterController {
 
     @Autowired
@@ -17,11 +17,23 @@ public class CharacterController {
     @Autowired
     MovieCharacterService movieCharacterService;
 
+    //  POST METHODS
+    @PostMapping()
+    public void saveCharacter(@RequestBody Character character) {
+        characterService.saveCharacter(character);
+    }
 
-    //  Get methods
+    //  GET METHODS
     @GetMapping()
     public List<Character> getAllCharacter() {
         return characterService.getAllCharacters();
+    }
+    @GetMapping(value = "{idCharacter}")
+    public Object getCharacterById(@PathVariable Integer idCharacter) {
+        if (characterService.getCharacterById(idCharacter) != null) {
+            return characterService.getCharacterById(idCharacter);
+        }
+        return "Character not found!";
     }
     @GetMapping(params = "name")
     public Object getCharacterByName(@RequestParam("name") String name){
@@ -37,23 +49,22 @@ public class CharacterController {
     }
 //    TODO: getMoviesIn
 
-//  Delete Methods
-    @DeleteMapping(path = "/del={characterId}")
-    public String delCharacter(@PathVariable Integer characterId) {
-        movieCharacterService.removeCharacterFromAllMovies(characterId);
-        return characterService.delCharacter(characterId);
+    //  DELETE METHODS
+    @DeleteMapping(path = "/{idCharacter}")
+    public String delCharacter(@PathVariable Integer idCharacter) {
+        movieCharacterService.removeCharacterFromAllMovies(idCharacter);
+        return characterService.delCharacter(idCharacter);
     }
-    @DeleteMapping(path = "/del=all")
+    @DeleteMapping(path = "/all")
     public void delAllCharacter(){
         movieCharacterService.removeAllCharactersFromMovies();
         characterService.delAllCharacter();
     }
 
-//  Post Methods
-    @PostMapping("/save/{name}/{lastName}/{age}/{weight}")
-    public void saveCharacter(@PathVariable String name, @PathVariable String lastName,
-                              @PathVariable int age, @PathVariable int weight) {
-        Character character = new Character(name, lastName, age, weight);
-        characterService.saveCharacter(character);
+//    PUT METHODS
+    @PutMapping(value = "/{idCharacter}")
+    public Object editCharacter(@RequestBody Character character, @PathVariable Integer idCharacter) {
+        return characterService.updateCharacter(character, idCharacter);
     }
+
 }

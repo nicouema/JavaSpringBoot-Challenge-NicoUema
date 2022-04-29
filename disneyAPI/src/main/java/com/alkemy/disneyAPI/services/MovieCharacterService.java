@@ -21,7 +21,7 @@ public class MovieCharacterService {
     public String addCharacterToMovie(Integer characterId, Integer movieId) {
         if (movieService.movieExist(movieId)) {
             if (characterService.characterExist(characterId)){
-                Character characterToAdd = (Character) characterService.getCharacterById(characterId);
+                Character characterToAdd = characterService.getCharacterById(characterId);
                 Movie movie = (Movie) movieService.getMovieById(movieId);
                 if (!movie.getCharacterIn().contains(characterToAdd)){
                     movie.addCharacterIn(characterToAdd);
@@ -51,7 +51,7 @@ public class MovieCharacterService {
     public String removeCharacterFromMovie(Integer idCharacter, Integer idMovie) {
         if (movieService.movieExist(idMovie)) {
             if (characterService.characterExist(idCharacter)) {
-                Character characterToRemove = (Character) characterService.getCharacterById(idCharacter);
+                Character characterToRemove = characterService.getCharacterById(idCharacter);
                 Movie movie = (Movie) movieService.getMovieById(idMovie);
                 movie.delCharacterIn(characterToRemove);
                 movieService.saveMovie(movie);

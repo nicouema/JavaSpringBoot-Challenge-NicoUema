@@ -47,12 +47,12 @@ public class CharacterService {
     public List<Character> getAllCharacters() {
         return (List<Character>) characterRepository.findAll();
     }
-    public Object getCharacterById(Integer id) {
+    public Character getCharacterById(Integer id) {
         if (characterExist(id)) {
             return characterRepository.findById(id).get();
         }
         else {
-            return "Character not found!";
+            return null;
         }
     }
     public Character getCharacterByName(String name) {
@@ -81,6 +81,19 @@ public class CharacterService {
         }
         return listCharacters;
     }
-    public void getCharacterMoviesIn(Integer id) {
+
+    public Object updateCharacter(Character character, Integer characterId) {
+        Character characterToEdit = getCharacterById(characterId);
+        if (characterToEdit != null) {
+            characterToEdit.setName(character.getName());
+            characterToEdit.setLastname(character.getLastname());
+            characterToEdit.setAge(character.getAge());
+            characterToEdit.setWeight(character.getWeight());
+            characterToEdit.setImage(character.getImage());
+            characterToEdit.setHistory(character.getHistory());
+            characterRepository.save(characterToEdit);
+            return characterToEdit;
+        }
+        return "Character Not Found!";
     }
 }
