@@ -39,14 +39,18 @@ public class CharacterService {
     }
 
     // Post Methods
-    public void saveCharacter(Character character){
+    public Character createCharacter(Character character){
         characterRepository.save(character);
+        return character;
     }
 
     // GetMethods
     public List<Character> getAllCharacters() {
         return (List<Character>) characterRepository.findAll();
     }
+//    public List<Character> searchAndFilter(String name, Integer age, Integer weight, Integer movieId) {
+//
+//    }
     public Character getCharacterById(Integer id) {
         if (characterExist(id)) {
             return characterRepository.findById(id).get();
@@ -55,18 +59,30 @@ public class CharacterService {
             return null;
         }
     }
-    public Character getCharacterByName(String name) {
+    public List<Character> getCharactersByName(String name) {
+        List<Character> listCharacters = new ArrayList<>();
         for(Character character:getAllCharacters()) {
-            if(Objects.equals(character.getName(), name)){
-                return character;
+            String nameCharacter = (character.getName() + character.getLastname()).toLowerCase();
+            if(nameCharacter.contains(name.toLowerCase())){
+                listCharacters.add(character);
             }
         }
-        return null;
+        return listCharacters;
     }
     public List<Character> getCharactersByAge(int age) {
         List<Character> listCharacters = new ArrayList<>();
         for(Character character:getAllCharacters()){
             if(Objects.equals(character.getAge(), age)){
+                listCharacters.add(character);
+            }
+        }
+        return listCharacters;
+    }
+
+    public List<Character> getCharactersByWeight(Integer weight) {
+        List<Character> listCharacters = new ArrayList<>();
+        for(Character character:getAllCharacters()){
+            if(Objects.equals(character.getWeight(), weight)){
                 listCharacters.add(character);
             }
         }
@@ -85,15 +101,11 @@ public class CharacterService {
     public Object updateCharacter(Character character, Integer characterId) {
         Character characterToEdit = getCharacterById(characterId);
         if (characterToEdit != null) {
-            characterToEdit.setName(character.getName());
-            characterToEdit.setLastname(character.getLastname());
-            characterToEdit.setAge(character.getAge());
-            characterToEdit.setWeight(character.getWeight());
-            characterToEdit.setImage(character.getImage());
-            characterToEdit.setHistory(character.getHistory());
+            characterToEdit = characterToEdit.update(character);
             characterRepository.save(characterToEdit);
             return characterToEdit;
         }
         return "Character Not Found!";
     }
+
 }

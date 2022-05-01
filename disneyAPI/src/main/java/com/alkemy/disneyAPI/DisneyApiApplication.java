@@ -46,15 +46,15 @@ public class DisneyApiApplication {
 			Movie movie02 = new Movie("Image02", "Piratas del Caribe 2"
 					, 7);
 			Movie movie03 = new Movie("Image04","Piratas del Caribe 3", 8);
-//			genderService.saveGender(gender01);
-//			characterService.saveCharacter(character04);
+//			genderService.createGender(gender01);
+//			characterService.createCharacter(character04);
 //			characterService.saveCharacter(character05);
 //			movie01.setGender(gender01);
 //			movie01.addCharacterIn(character04);
 //			movie01.addCharacterIn(character05);
 //			movie02.addCharacterIn(character04);
 //			movie02.setGender(gender01);
-//			movieService.saveMovie(movie01);
+//			movieService.createMovie(movie01);
 //			movieService.saveMovie(movie02);
 //			movieService.saveMovie(movie03);
 

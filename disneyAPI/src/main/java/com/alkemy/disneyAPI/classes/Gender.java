@@ -1,11 +1,15 @@
 package com.alkemy.disneyAPI.classes;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import javax.persistence.*;
 import java.util.List;
 
 
 @Table(name = "Genders")
 @Entity
+@JsonPropertyOrder({"id_gender", "name", "image", "moviesOfGender"})
 public class Gender {
 
     @Id
@@ -14,7 +18,10 @@ public class Gender {
     private Integer id_gender;
     private String name;
     private String image;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "gender_id", cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE})
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "gender", cascade = {CascadeType.REFRESH,
+            CascadeType.MERGE, CascadeType.REMOVE})
+    @JsonIgnoreProperties("gender")
     private List<Movie> moviesOfGender;
 
     protected Gender() {

@@ -6,6 +6,7 @@ import com.alkemy.disneyAPI.repositories.MoviesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,18 +40,19 @@ public class MovieService {
             return null;
         }
     }
-    public Movie getMovieByName(String name) {
+    public List<Movie> getMovieByName(String name) {
+        List<Movie> listMovies = new ArrayList<>();
         for (Movie movie:getAllMovies()) {
-            if (Objects.equals(movie.getTitle(), name)) {
-                System.out.println("<<<<<FOUND>>>>>");
-                return movie;
+            String movieName = movie.getTitle().toLowerCase();
+            if (movieName.contains(name.toLowerCase())) {
+                listMovies.add(movie);
             }
         }
-        return null;
+        return listMovies;
     }
 
 //  Post Methods
-    public Movie saveMovie(Movie movie) {
+    public Movie createMovie(Movie movie) {
         return movieRepository.save(movie);}
 
 //  Delete Methods
@@ -66,13 +68,13 @@ public class MovieService {
     public void removeCharacterFromAllMovies(Integer id){
         List<Movie> listMovies = getAllMovies();
         for (Movie movie:listMovies){
-            List<Character> characterList = movie.getCharacterIn();
+            List<Character> characterList = movie.getCharactersIn();
             for(Character character:characterList){
                 if (Objects.equals(character.getCharacter_id(), id)){
                     characterList.remove(character);
                 }
             }
-            movie.setCharacterIn(characterList);
+            movie.setCharactersIn(characterList);
         }
     }
     public void delAllMovies(){
@@ -80,28 +82,34 @@ public class MovieService {
     }
 
     public List<Movie> getMoviesSorted(String order) {
-    if (Objects.equals(order, "ASC")) {
-        return (List<Movie>) movieRepository.getMoviesSortedAsc();
-    }
-    else{
-        return movieRepository.getMoviesSortedDesc();
-    }
-    }
-
-    public Movie createMovie(Movie movie) {
-        return movieRepository.save(movie);
+        return switch (order) {
+            case "ASC" -> movieRepository.getMoviesSortedAsc();
+            case "DESC" -> movieRepository.getMoviesSortedDesc();
+            default -> getAllMovies();
+        };
     }
 
 //    PUT METHOD
     public Object updateMovie(Movie movie, Integer idMovie) {
         Movie movieToEdit = getMovieById(idMovie);
         if (movieToEdit != null) {
-            movieToEdit.setTitle(movie.getTitle());
-            movieToEdit.setImage(movie.getImage());
-            movieToEdit.setQualification(movie.getQualification());
-            movieToEdit.setGender_id(movie.getGender_id());
+            movieToEdit = movieToEdit.update(movie);
+//            if (movie.getGender_id() != null && genderService.getGenderByID(movie.getGender_id()) != null)
+            movieRepository.save(movieToEdit);
             return movieToEdit;
         }
         return "Movie not Found!";
     }
+
+    public List<Movie> getMoviesByTitle(String name) {
+        List<Movie> listMovie = new ArrayList<>();
+        for (Movie movie:getAllMovies()){
+            String title = movie.getTitle().toLowerCase();
+            if (title.contains(name.toLowerCase())){
+                listMovie.add(movie);
+            }
+        }
+        return listMovie;
+    }
+
 }

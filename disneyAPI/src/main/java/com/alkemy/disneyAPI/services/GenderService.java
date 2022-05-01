@@ -18,7 +18,7 @@ public class GenderService {
      * @param genderId: Gender's id searched.
      * @return true if it's exist, otherwise false.
      */
-    private boolean genderExist(Integer genderId){
+    public boolean genderExist(Integer genderId){
         return genderRepository.existsById(genderId);
     }
 
@@ -35,7 +35,7 @@ public class GenderService {
         }
     }
 
-    public Gender saveGender(Gender gender) {
+    public Gender createGender(Gender gender) {
         return genderRepository.save(gender);
     }
 

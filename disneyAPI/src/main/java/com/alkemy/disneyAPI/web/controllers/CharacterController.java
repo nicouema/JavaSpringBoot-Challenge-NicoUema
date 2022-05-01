@@ -2,32 +2,28 @@ package com.alkemy.disneyAPI.web.controllers;
 
 import com.alkemy.disneyAPI.classes.Character;
 import com.alkemy.disneyAPI.services.CharacterService;
-import com.alkemy.disneyAPI.services.MovieCharacterService;
+import com.alkemy.disneyAPI.services.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/characters")
+@RequestMapping(path = "/characters")
 public class CharacterController {
 
     @Autowired
     CharacterService characterService;
     @Autowired
-    MovieCharacterService movieCharacterService;
+    Services services;
 
     //  POST METHODS
     @PostMapping()
-    public void saveCharacter(@RequestBody Character character) {
-        characterService.saveCharacter(character);
+    public Character createCharacter(@RequestBody Character character) {
+        return characterService.createCharacter(character);
     }
 
     //  GET METHODS
-    @GetMapping()
-    public List<Character> getAllCharacter() {
-        return characterService.getAllCharacters();
-    }
     @GetMapping(value = "{idCharacter}")
     public Object getCharacterById(@PathVariable Integer idCharacter) {
         if (characterService.getCharacterById(idCharacter) != null) {
@@ -35,35 +31,55 @@ public class CharacterController {
         }
         return "Character not found!";
     }
-    @GetMapping(params = "name")
-    public Object getCharacterByName(@RequestParam("name") String name){
-        return characterService.getCharacterByName(name);
+    @GetMapping()
+    public List<Character> searchAndFilterCharacter(@RequestParam(value = "name", required = false) String name,
+                                                    @RequestParam(value = "age", required = false) Integer age,
+                                                    @RequestParam(value = "weight", required = false) Integer weight,
+                                                    @RequestParam(value = "idMovie", required = false) Integer idMovie) {
+        List<Character> characterList = characterService.getAllCharacters();
+        if (name != null){
+            characterList.retainAll(characterService.getCharactersByName(name));
+        }
+        if (age != null) {
+            characterList.retainAll(characterService.getCharactersByAge(age));
+        }
+        if (weight != null) {
+            characterList.retainAll(characterService.getCharactersByWeight(weight));
+        }
+        if (idMovie != null) {
+            characterList.retainAll(services.getCharactersByMovie(idMovie));
+        }
+        return characterList;
     }
-    @GetMapping(params = "age")
-    public List<Character> getCharacterByAge(@RequestParam("age") int age){
-        return characterService.getCharactersByAge(age);
-    }
-    @GetMapping(params = "weight")
-    public List<Character> getCharactersByWeight(@RequestParam("weight") int weight) {
-        return characterService.getCharactersByWeight(weight);
-    }
+//    @GetMapping(params = "name")
+//    public Object getCharacterByName(@RequestParam("name") String name){
+//        return characterService.getCharacterByName(name);
+//    }
+//    @GetMapping(params = "age")
+//    public List<Character> getCharacterByAge(@RequestParam("age") int age){
+//        return characterService.getCharactersByAge(age);
+//    }
+//    @GetMapping(params = "weight")
+//    public List<Character> getCharactersByWeight(@RequestParam("weight") int weight) {
+//        return characterService.getCharactersByWeight(weight);
+//    }
 //    TODO: getMoviesIn
 
     //  DELETE METHODS
-    @DeleteMapping(path = "/{idCharacter}")
+    @DeleteMapping(value = "/{idCharacter}")
     public String delCharacter(@PathVariable Integer idCharacter) {
-        movieCharacterService.removeCharacterFromAllMovies(idCharacter);
+        services.removeCharacterFromAllMovies(idCharacter);
         return characterService.delCharacter(idCharacter);
     }
-    @DeleteMapping(path = "/all")
+    @DeleteMapping(value = "all")
     public void delAllCharacter(){
-        movieCharacterService.removeAllCharactersFromMovies();
+        services.removeAllCharactersFromMovies();
         characterService.delAllCharacter();
     }
 
 //    PUT METHODS
-    @PutMapping(value = "/{idCharacter}")
-    public Object editCharacter(@RequestBody Character character, @PathVariable Integer idCharacter) {
+    @PutMapping(value = "{idCharacter}")
+    public Object updateCharacter(@RequestBody Character character, @PathVariable Integer idCharacter) {
         return characterService.updateCharacter(character, idCharacter);
     }
 

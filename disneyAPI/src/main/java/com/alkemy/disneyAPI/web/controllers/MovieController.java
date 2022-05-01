@@ -1,10 +1,9 @@
 package com.alkemy.disneyAPI.web.controllers;
 
-import com.alkemy.disneyAPI.classes.Gender;
 import com.alkemy.disneyAPI.classes.Movie;
-import com.alkemy.disneyAPI.services.GenderService;
-import com.alkemy.disneyAPI.services.MovieCharacterService;
 import com.alkemy.disneyAPI.services.MovieService;
+import com.alkemy.disneyAPI.services.Services;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,14 +16,27 @@ public class MovieController {
     @Autowired
     MovieService movieService;
     @Autowired
-    MovieCharacterService movieCharacterService;
-    @Autowired
-    GenderService genderService;
+    Services services;
 
 //  Get Methods
     @GetMapping()
-    public List<Movie> getAllMovies(){
-        return movieService.getAllMovies();
+    @JsonIgnoreProperties({"movie_id", "qualification", "gender"})
+    public List<Movie> searchAndFilterMovies(@RequestParam(value = "name", required = false) String name,
+                                             @RequestParam(value = "idGender", required = false) Integer idGender,
+                                             @RequestParam(value = "order", required = false) String order){
+        List<Movie> listMovies = movieService.getAllMovies();
+        if (order != null) {
+            listMovies = movieService.getMoviesSorted(order);
+        }
+        if (name != null) {
+            System.out.println("NAME NOT NULL");
+            listMovies.retainAll(movieService.getMoviesByTitle(name));
+        }
+        if (idGender != null) {
+            System.out.println("GENDER NOT NULL");
+            listMovies.retainAll(services.getMoviesByGender(idGender));
+        }
+        return listMovies;
     }
     @GetMapping(value = "{id}")
     public Object getMovieById(@PathVariable Integer id){
@@ -32,22 +44,6 @@ public class MovieController {
             return movieService.getMovieById(id);
         }
         return "Movie not found!";
-    }
-    @GetMapping(params = "name")
-    public Object getMovieByName(@RequestParam("name") String name) {
-        return movieService.getMovieByName(name);
-    }
-    @GetMapping(params = "idGender")
-    public List<Movie> getMoviesOfGender(@RequestParam("idGender") Integer idGender){
-        Gender gender = (Gender) genderService.getGenderByID(idGender);
-        if (gender!=null) {
-            return gender.getMoviesOfGender();
-        }
-        return null;
-    }
-    @GetMapping(params = "order")
-    public List<Movie> getMoviesSorted(@RequestParam("order") String order) {
-        return movieService.getMoviesSorted(order);
     }
 
 //  Post Methods
@@ -57,7 +53,11 @@ public class MovieController {
     }
     @PostMapping(path = "/{idMovie}/character/{idCharacter}")
     public String addCharacterToMovie(@PathVariable Integer idCharacter, @PathVariable Integer idMovie) {
-        return movieCharacterService.addCharacterToMovie(idCharacter, idMovie);
+        return services.addCharacterToMovie(idCharacter, idMovie);
+    }
+    @PostMapping(path = "/{idMovie}/gender/{idGender}")
+    public String setGenderToMovie(@PathVariable Integer idGender, @PathVariable Integer idMovie) {
+        return services.setGenderToMovie(idGender, idMovie);
     }
 
 //  Delete Methods
@@ -71,12 +71,16 @@ public class MovieController {
     }
     @DeleteMapping(path = "/{idMovie}/character/{idCharacter}")
     public String removeCharacterFromMovie( @PathVariable Integer idCharacter, @PathVariable Integer idMovie) {
-        return movieCharacterService.removeCharacterFromMovie(idCharacter, idMovie);
+        return services.removeCharacterFromMovie(idCharacter, idMovie);
+    }
+    @DeleteMapping(path = "/{idMovie}/gender/{idGender}")
+    public String removeGenderToMovie(@PathVariable Integer idGender, @PathVariable Integer idMovie) {
+        return services.removeGenderToMovie(idGender, idMovie);
     }
 
 //    PUT METHODS
     @PutMapping(value = "{idMovie}")
-    public Object updateMovie(@ModelAttribute Movie movie, @PathVariable Integer idMovie) {
+    public Object updateMovie(@RequestBody Movie movie, @PathVariable Integer idMovie) {
         return movieService.updateMovie(movie, idMovie);
     }
 }

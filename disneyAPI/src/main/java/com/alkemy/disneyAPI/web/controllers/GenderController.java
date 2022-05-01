@@ -32,7 +32,7 @@ public class GenderController {
 
     //  POST METHODS
     @PostMapping()
-    public void saveGender(@RequestBody Gender gender) {
-        genderService.saveGender(gender);
+    public Gender createGender(@RequestBody Gender gender) {
+        return genderService.createGender(gender);
     }
 }

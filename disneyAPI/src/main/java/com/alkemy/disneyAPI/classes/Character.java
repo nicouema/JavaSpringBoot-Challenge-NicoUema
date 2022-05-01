@@ -1,6 +1,7 @@
 package com.alkemy.disneyAPI.classes;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Characters")
+@JsonPropertyOrder({"character_id", "name", "lastname", "age", "weight", "history", "image", "moviesIn"})
 public class Character {
 
     @Id
@@ -18,27 +20,27 @@ public class Character {
     private String image;
     private String name;
     private String lastname;
-    private int age;
-    private int weight;
+    private Integer age;
+    private Integer weight;
     private String history;
 
-    @JsonIgnoreProperties("characterIn")
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "characterIn", cascade = {CascadeType.MERGE,
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "charactersIn", cascade = {CascadeType.MERGE,
                                                      CascadeType.REFRESH, CascadeType.DETACH})
+    @JsonIgnoreProperties("charactersIn")
     private List<Movie> moviesIn = new ArrayList<>();
 
 //  Constructors
     protected Character() {
     }
 
-    public Character(String name, String lastname, int age, int weight) {
+    public Character(String name, String lastname, Integer age, Integer weight) {
         this.name = name;
         this.lastname = lastname;
         this.age = age;
         this.weight = weight;
     }
 
-    public Character(String image, String name, String lastname, int age, int weight, String history) {
+    public Character(String image, String name, String lastname, Integer age, Integer weight, String history) {
         this.image = image;
         this.name = name;
         this.lastname = lastname;
@@ -87,19 +89,19 @@ public class Character {
         this.lastname = lastname;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
-    public int getWeight() {
+    public Integer getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
     }
 
@@ -129,5 +131,27 @@ public class Character {
 
     public void clearMoviesIn() {
         this.moviesIn.clear();
+    }
+
+    public Character update(Character character) {
+        if (character.getName() != null) {
+            this.setName(character.getName());
+        }
+        if (character.getLastname() != null) {
+            this.setLastname(character.getLastname());
+        }
+        if (character.getAge() != null) {
+            this.setAge(character.getAge());
+        }
+        if (character.getWeight() != null) {
+            this.setWeight(character.getWeight());
+        }
+        if (character.getHistory() != null) {
+            this.setHistory(character.getHistory());
+        }
+        if (character.getImage() != null) {
+            this.setImage(character.getImage());
+        }
+        return this;
     }
 }
