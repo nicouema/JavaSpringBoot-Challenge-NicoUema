@@ -31,8 +31,10 @@ Las funcionalidades del siguiente proyecto se pueden dividir en:
         4. Calificacion.
             - La cual se valida que este en un intervalo del 1 al 5.
         5. Personajes asociados:
-            - Se pueden asociar personajes a la pelicula por medio del id.
-            - Se pueden eliminar personajes de la pelicula por medio del id.
+            - Se pueden asociar personajes a la pelicula por medio del id. Se valida que exista un personaje con el id ingresado, y que no se encuentre en la pelicula.
+            - Se pueden eliminar personajes de la pelicula por medio del id. Se valida que exista un personaje con ese id.
+        6. Genero:
+            - Se puede asociar un genero a varias peliculas. Se valida que exista un genero con ese id y que no se encuentre ya asociado a dicha pelicula.
     2. CRUD
         1. Creacion de peliculas.
         2. Lectura de peliculas: se consulta con un GET y se muestran sus atributos.
@@ -58,3 +60,8 @@ Es la primera vez que hago un proyecto utilizando Spring Boot, por ende, a lo la
 ## Pendiente
 - La autenticacion y registro del usuario no pudieron ser finalizadas, aun asi seguiré con el desarrollo del proyecto para aprender a desarrollarlo.
 - El envio de email no fue desarrollado.
+
+## Base de Datos
+Nombre: disneyAPI
+Puerto: 8080
+Dialect: SQLServer2016
