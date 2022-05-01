@@ -62,6 +62,14 @@ Es la primera vez que hago un proyecto utilizando Spring Boot, por ende, a lo la
 - El envio de email no fue desarrollado.
 
 ## Base de Datos
-Nombre: disneyAPI
-Puerto: 8080
-Dialect: SQLServer2016
+- Nombre: disneyAPI
+- Puerto: 8080
+- Dialect: SQLServer2016
+- Tablas:
+  1. movies
+  2. characters
+  3. genders
+  4. movies_characters: tabla de muchas peliculas a muchos personajes.
+  5. roles
+  6. users
+  7. users_roles: tabla de muchos usuarios a muchos roles
