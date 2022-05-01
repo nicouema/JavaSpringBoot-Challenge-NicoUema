@@ -1,24 +1,60 @@
+# DisneyAPI Challenge Alkemy
+## Nicolas Uema Capdevila
+### Spring Boot Rest API
+
+Las funcionalidades del siguiente proyecto se pueden dividir en:
+1. Personajes:
+    1. Poseen atributos:
+        1. Nombre.
+        2. Imagen.
+        2. Edad.
+        3. Peso.
+        4. Historia.
+        5. Peliculas en la que participa.
+    2. CRUD
+        1.  Creacion de personajes.
+        2.  Lectura de los personajes.
+        3.  Actualizacion de los personajes.
+        4.  Eliminacion de los personajes.
+            - Cuando un personaje es eliminado, previamente es removido de todas las peliculas a las que se asocia. La lógica la programe yo para garantizar el correcto funcionamiento y permitir posibles modificaciones futuras.
+    3. Busqueda filtrada por:
+        1. Nombre.
+        2. Edad.
+        3. Peso.
+        4. Pelicula en la que aparecen.
+2. Peliculas
+    1. Poseen atributos:
+        1. Titulo.
+        2. Imagen.
+        3. Fecha de creacion.
+            - Esta fecha se registra automaticamente al momento de crear una nueva entidad, el formato de fecha es "dd-MM-yyyy HH:mm:ss".
+        4. Calificacion.
+            - La cual se valida que este en un intervalo del 1 al 5.
+        5. Personajes asociados:
+            - Se pueden asociar personajes a la pelicula por medio del id.
+            - Se pueden eliminar personajes de la pelicula por medio del id.
+    2. CRUD
+        1. Creacion de peliculas.
+        2. Lectura de peliculas: se consulta con un GET y se muestran sus atributos.
+        3. Actualizacion de las peliculas.
+        4. Eliminacion de las peliculas.
+    3. Busqueda filtrada por:
+        1. Nombre.
+        2. Genero.
+        3. Ordenada ascendentemente o descendentemente por la fecha de creacion.
+
+## Desarrollo
+Es la primera vez que hago un proyecto utilizando Spring Boot, por ende, a lo largo de todo el desarrollo fui consultando distintas fuentes. Tratando de aprender con profundidad el funcionamiento y entenderlo en su ejecucion. Estas fuentes son:
 
 
-SPRING BOOT
-https://www.javatpoint.com/spring-boot-architecture
-https://www.geeksforgeeks.org/spring-boot-code-structure/amp/
-https://spring.io/guides/tutorials/rest/
-https://stackoverflow.com/questions/44566760/spring-boot-using-foreign-key-in-crudrepository
+##### SPRING BOOT
+- [Spring Boot Architecture](https://www.javatpoint.com/spring-boot-architecture)
+- [Rest](https://spring.io/guides/tutorials/rest/)
+- [Spring Data Rest Relationship](https://www.baeldung.com/spring-data-rest-relationships)
+##### SPRING SECURITY
+- [Spring Boot Security Web](https://spring.io/guides/gs/securing-web/)
+- [Spring Security Architecture / Web Security](https://spring.io/guides/topicals/spring-security-architecture#web-security)
 
-JPA-HIBERNATE-REST
-https://www.campusmvp.es/recursos/post/que-son-spring-framework-y-spring-boot-tu-primer-programa-java-con-este-framework.aspx
-https://www.baeldung.com/spring-security-login#:~:text=The%20default%20URL%20where%20the,j_spring_security_check%20before%20Spring%20Security%204.
-https://stackoverflow.com/questions/45183875/spring-boot-controller-not-mapping
-https://www.baeldung.com/spring-data-rest-relationships
-https://www.baeldung.com/jpa-one-to-one
-https://nullbeans.com/configuring-postload-and-postupdate-in-jpa-hibernate/
-
-SPRING SECURITY
-https://spring.io/guides/gs/securing-web/
-https://www.appsdeveloperblog.com/spring-security-default-username-password-role/
-https://somospnt.com/blog/162-maneja-tus-usuarios-y-sus-roles-con-spring-security
-https://spring.io/guides/topicals/spring-security-architecture
-https://spring.io/guides/topicals/spring-security-architecture#web-security
-default user:       user
-default password:   123456
+## Pendiente
+- La autenticacion y registro del usuario no pudieron ser finalizadas, aun asi seguiré con el desarrollo del proyecto para aprender a desarrollarlo.
+- El envio de email no fue desarrollado.

@@ -32,7 +32,7 @@ public class Services {
                 if (!movie.getCharactersIn().contains(characterToAdd)){
                     movie.addCharacterIn(characterToAdd);
                     movieService.createMovie(movie);
-                    return "Character: " + characterToAdd.getName() + " " + characterToAdd.getLastname() +
+                    return "Character: " + characterToAdd.getName() +
                             " added to Movie: " + movie.getTitle();
                 }
                 else {
@@ -62,7 +62,7 @@ public class Services {
                 if (movie.getCharactersIn().contains(characterToRemove)) {
                     movie.delCharacterIn(characterToRemove);
                     movieService.createMovie(movie);
-                    return "Character: " + characterToRemove.getName() + " " + characterToRemove.getLastname() +
+                    return "Character: " + characterToRemove.getName() + " " +
                             " removed from Movie: " + movie.getTitle();
                 } else {
                     return "Character not in the movie!";
@@ -141,14 +141,11 @@ public class Services {
 
     public List<Character> getCharactersByMovie(Integer movieId) {
         List<Character> listCharacters = new ArrayList<>();
-        System.out.println("BEGIN");
         if (!movieService.movieExist(movieId)){
-            System.out.println("NO EXIST");
-            return null;
+            return listCharacters;
         }
         Movie movie = movieService.getMovieById(movieId);
         for(Character character:characterService.getAllCharacters()){
-            System.out.println("<<<<Contains>>>>");
             if(character.getMoviesIn().contains(movie)){
                 listCharacters.add(character);
             }

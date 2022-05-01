@@ -1,6 +1,7 @@
 package com.alkemy.disneyAPI.classes;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -21,6 +22,10 @@ public class Movie {
 
     private String image;
     private String title;
+    @JsonFormat(
+            shape = JsonFormat.Shape.STRING,
+            pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime creationDate = LocalDateTime.now();
     private Integer qualification;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE,
@@ -38,13 +43,6 @@ public class Movie {
     @JoinColumn(name = "gender")
     @JsonIgnoreProperties("moviesOfGender")
     private Gender gender;
-
-    @JsonFormat(
-            shape = JsonFormat.Shape.STRING,
-            pattern = "dd-MM-yyyy hh:mm:ss")
-    private LocalDateTime creationDate = LocalDateTime.now();
-
-
 
 //  Constructor
 
@@ -73,8 +71,7 @@ public class Movie {
     }
 
     //  Getters and Setters
-
-
+    @JsonIgnore
     public Integer getMovie_id() {
         return movie_id;
     }

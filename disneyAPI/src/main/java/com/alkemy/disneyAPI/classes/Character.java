@@ -1,5 +1,6 @@
 package com.alkemy.disneyAPI.classes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -19,7 +20,6 @@ public class Character {
 
     private String image;
     private String name;
-    private String lastname;
     private Integer age;
     private Integer weight;
     private String history;
@@ -35,7 +35,6 @@ public class Character {
 
     public Character(String name, String lastname, Integer age, Integer weight) {
         this.name = name;
-        this.lastname = lastname;
         this.age = age;
         this.weight = weight;
     }
@@ -43,7 +42,6 @@ public class Character {
     public Character(String image, String name, String lastname, Integer age, Integer weight, String history) {
         this.image = image;
         this.name = name;
-        this.lastname = lastname;
         this.age = age;
         this.weight = weight;
         this.history = history;
@@ -56,7 +54,6 @@ public class Character {
                 "id=" + character_id +
                 ", image=" + image +
                 ", name='" + name + '\'' +
-                ", lastname='" + lastname + '\'' +
                 ", age=" + age +
                 ", weight=" + weight +
                 ", history='" + history + '\'' +
@@ -79,14 +76,6 @@ public class Character {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
     }
 
     public Integer getAge() {
@@ -113,6 +102,7 @@ public class Character {
         this.history = history;
     }
 
+    @JsonIgnore
     public Integer getCharacter_id() {
         return character_id;
     }
@@ -136,9 +126,6 @@ public class Character {
     public Character update(Character character) {
         if (character.getName() != null) {
             this.setName(character.getName());
-        }
-        if (character.getLastname() != null) {
-            this.setLastname(character.getLastname());
         }
         if (character.getAge() != null) {
             this.setAge(character.getAge());

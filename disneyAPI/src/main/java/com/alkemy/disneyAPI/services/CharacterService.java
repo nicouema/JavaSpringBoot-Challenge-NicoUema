@@ -62,7 +62,7 @@ public class CharacterService {
     public List<Character> getCharactersByName(String name) {
         List<Character> listCharacters = new ArrayList<>();
         for(Character character:getAllCharacters()) {
-            String nameCharacter = (character.getName() + character.getLastname()).toLowerCase();
+            String nameCharacter = (character.getName()).toLowerCase();
             if(nameCharacter.contains(name.toLowerCase())){
                 listCharacters.add(character);
             }

@@ -1,5 +1,6 @@
 package com.alkemy.disneyAPI.classes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -15,7 +16,7 @@ public class Gender {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true,nullable = false, name = "id_gender")
-    private Integer id_gender;
+    private Integer gender_id;
     private String name;
     private String image;
 
@@ -37,12 +38,13 @@ public class Gender {
         this.name = name;
     }
 
-    public Integer getId_gender() {
-        return id_gender;
+    @JsonIgnore
+    public Integer getGender_id() {
+        return gender_id;
     }
 
-    public void setId_gender(Integer id_gender) {
-        this.id_gender = id_gender;
+    public void setGender_id(Integer gender_id) {
+        this.gender_id = gender_id;
     }
 
     public List<Movie> getMoviesOfGender() {
